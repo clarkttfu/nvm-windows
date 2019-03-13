@@ -3,7 +3,7 @@
 #define MyAppLCShortName "nvm"
 #define MyAppVersion ""
 #define MyAppPublisher "Ecor Ventures LLC"
-#define MyAppURL "https://github.com/coreybutler/nvm-windows"
+#define MyAppURL "https://github.com/clarkttfu/nvm-windows"
 #define MyAppExeName "nvm.exe"
 #define MyIcon "bin\nodejs.ico"
 #define ProjectRoot "."
@@ -13,8 +13,6 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 PrivilegesRequired=admin
-SignTool=MsSign $f
-SignedUninstaller=yes
 AppId=40078385-F676-4C61-9A9C-F9028599D6D3
 AppName={#MyAppName}
 AppVersion={%AppVersion}
