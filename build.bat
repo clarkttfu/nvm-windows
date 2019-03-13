@@ -19,7 +19,7 @@ REM Group the file with the helper binaries
 move nvm.exe %GOBIN%
 
 REM Codesign the executable
-.\buildtools\signtools\x64\signtool.exe sign /debug /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a %GOBIN%\nvm.exe
+.\buildtools\signtool.exe sign /debug /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a %GOBIN%\nvm.exe
 
 
 for /f %%i in ('%GOBIN%\nvm.exe version') do set AppVersion=%%i
@@ -38,14 +38,16 @@ REM Create the distribution directory
 mkdir "%DIST%"
 
 REM Create the "no install" zip version
-for %%a in (%GOBIN%) do (buildtools\zip -j -9 -r "%DIST%\nvm-noinstall.zip" "%CD%\LICENSE" "%%a\*" -x "%GOBIN%\nodejs.ico")
+for %%a in (%GOBIN%) do (buildtools\7za -mx=9 -r -x!"%GOBIN%\nodejs.ico" a "%DIST%\nvm-noinstall.zip" "%CD%\LICENSE" "%%a\*")
 
 REM Generate the installer (InnoSetup)
-buildtools\iscc %INNOSETUP% /o%DIST%
-buildtools\zip -j -9 -r "%DIST%\nvm-setup.zip" "%DIST%\nvm-setup.exe"
+innosetup\iscc %INNOSETUP% /o%DIST%
+buildtools\7za -mx=9 -r a "%DIST%\nvm-setup.zip" "%DIST%\nvm-setup.exe"
 
 REM Generate checksums
 for %%f in (%DIST%\*.*) do (certutil -hashfile "%%f" MD5 | find /i /v "md5" | find /i /v "certutil" >> "%%f.checksum.txt")
+
+:END
 
 REM Cleanup
 del %GOBIN%\nvm.exe
